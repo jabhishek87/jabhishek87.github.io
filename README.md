@@ -1,4 +1,3 @@
 # Hadoop Simple Guide
 
-http://abhishek-jaiswal.github.io/
-
+http://jkabhishek.github.io/
