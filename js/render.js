@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $.get('data/data.yaml').done(function (data) {
+    $.get('sahayak/personal_data.yaml').done(function (data) {
         console.log('File load complete');
         JsonData = jsyaml.load(data)
         //console.log(JsonData);
@@ -42,24 +42,34 @@ $(document).ready(function() {
         $.each(JsonData.social_accounts, function( index, value ) {
             $.tmpl(experience_template, {"social_account": value}).appendTo("#dy_social");
         });
+    });
 
-        //Portfolio Datatable Block
-        $('#tbl_portfolio').DataTable({
-            "pageLength": 50,
-            "ajax": "data/repos_details.json",
-            "columns": [
-            {"data": "repo_full_name"},
-            {"data": "repo_description"},
-            {
-                "data": "repo_url",
-                "render": function(data, type, row, meta){
-                    if(type === 'display'){
-                        data = '<a href="' + data + '">' + data + '</a>';
+
+
+    // Portfolio Datatable Block
+    $.get('sahayak/repo_data.yaml').done(function (data) {
+        RepoData = jsyaml.load(data);
+        console.log(RepoData);
+
+        //Load  datatable
+        var oTblPortfolio = $("#tbl_portfolio");
+
+        oTblPortfolio.DataTable ({
+            //"pageLength": 50,
+            "data" : RepoData.data,
+            "columns" : [
+                { "data" : "repo_full_name" },
+                { "data" : "repo_description" },
+                {
+                    "data": "repo_url",
+                    "render": function(data, type, row, meta){
+                        if(type === 'display'){
+                            data = '<a href="' + data + '">' + data + '</a>';
+                        }
+                        return data;
                     }
-                    return data;
-                }
-            },
-            {"data": "repo_readme"}
+                },
+                { "data" : "repo_readme" }
             ],
             "columnDefs": [{
                 "targets": [ 3 ],
@@ -69,7 +79,7 @@ $(document).ready(function() {
         });
 
     });
-    //
+
 });
 
 // (function($) {
